@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        Vue中有2种数据绑定的方式：
+
+            1.单向绑定(v-bind)：数据只能从data流向页面，当Vue中的data发生变化时，会引起模板的重新解析，然后页面会发生变化，但是页面上的数据发生变化(如输入框中的数据)，Vue中的data却不会发生相应的变化
+
+            2.双向绑定(v-model)：数据不仅能从data流向页面，还可以从页面流向data。
+                备注：
+                    1.双向绑定一般都应用在表单类元素上（如：input、select等）
+                    2.v-model:value 可以简写为 v-model，因为v-model默认收集(捕获)的就是value值，也能说明将v-model用于非表单类元素时，无法捕获这些非表单类元素的Value(因为这些元素没有Value值)，从而会报错
+    -->
+
+    <div id="root">
+        <!-- 普通写法 -->
+
+        <!-- 单向数据绑定：<input type="text" v-bind:value="name"><br />
+        双向数据绑定：<input type="text" v-model:value="name"><br /> -->
+
+        <!-- 简写 -->
+
+        单向数据绑定：<input type="text" :value="name"><br />
+        双向数据绑定：<input type="text" v-model="name"><br />
+
+        <!-- 如下代码是错误的，因为v-model只能应用在表单类元素（输入类元素）上 -->
+        <!-- <h2 v-model:x="name">你好啊</h2> -->
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'nunaso'
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
