@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        data与el的2种写法
+                1.el有2种写法
+                    (1).new Vue时候配置el属性。
+                    (2).先创建Vue实例，随后再通过vm.$mount('#root')指定el的值。
+                2.data有2种写法
+                    (1).对象式
+                    (2).函数式
+                    如何选择：目前哪种写法都可以，以后学习到组件时，data必须使用函数式，否则会报错。
+                3.一个重要的原则：
+                    由Vue管理的函数，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。
+    -->
+
+    <div id="root">
+        <h3>你好，{{name}}</h3>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+
+        //#region el的两种写法 
+        //el第一种写法，在初始化Vue传入的配置项中写
+
+        /* new Vue({
+            el: '#root', 
+            data() {
+                return {
+                    name: 'nunaso'
+                }
+            },
+        }) */
+
+        //el第二种写法，初始化Vue时不在入的配置项中写，初始化后再指定容器，更加灵活，比如可以进行一些异步操作后再挂载容器
+        //$mount显然是在Vue这个构造函数的原型对象身上的，而非new Vue{...}得到的vue实例身上的，因为这是一种共有属性的抽取，应该放在Vue构造函数的原型对象上，当new Vue{...}.$mount('..')调用时，实际上是通过原型链，即：vue实例.__proto__.$mount('..')调用的
+
+        /* new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'nunaso'
+                }
+            },
+        }).$mount('#root') */
+
+        //#endregion
+
+        //#region data的两种写法 
+
+        //data的第一种写法：对象式
+        /* new Vue({
+            el: '#root',
+            data: {
+                name: 'nunaso'
+            }
+        }) */
+
+        //data的第二种写法：函数式
+        new Vue({
+            el: '#root',
+            data/*:function*/() {
+                console.log('@@@', this) //此处的this是new出来的Vue实例对象
+                return {
+                    name: 'nunaso'
+                }
+            },
+        })
+
+        //#endregion
+
+    </script>
+</body>
+
+</html>
