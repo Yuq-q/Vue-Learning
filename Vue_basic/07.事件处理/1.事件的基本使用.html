@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        事件的基本使用：
+            1.使用v-on:xxx 或 @xxx 绑定事件，其中xxx是事件名；
+            2.事件的回调需要配置在methods对象中，最终会在vm上；
+            3.methods中配置的函数，不要用箭头函数！否则this就不是vm了(箭头函数没有自己的this，箭头函数中的this从父级作用域，这里是window继承this, 对象没有this，拥有作用域的是下面的两部分)；
+                补充：在JavaScript中，作用域是由函数和代码块（如if 语句、循环等）创建的。我们可以将其归类为两种作用域:
+                        1．函数作用域:当您定义一个函数时，它会创建一个新的作用域。函数内的变量和参数只在
+                        该函数作用域内可见。每次调用函数时，都会创建一个新的执行上下文，拥有独立的作用域。
+                        2．代码块作用域︰由于ECMAScript 6 (ES6)引入了`1et`和`const`关键字，现在我们可
+                        以在代码块(（如if 语句、循环等）内创建具有块级作用域的变量。在块级作用域中声明的变量只在该代码块内可见，而不会污染外部作用域。
+            4.methods中配置的函数，都是被Vue所管理的函数，this的指向是vm 或 组件实例对象；
+            5.@click="demo" 和 @click="demo($event)" 效果一致，但后者可以传参；
+            6.method中的函数没有数据代理(没有getter和setter)，因为不涉及修改，但是如果将函数写在data中仍然会引起数据代理,会生成这个函数地getter和setter
+    -->
+
+    <div id="root">
+        <h2>欢迎来到{{name}}学习</h2>
+        <!-- 完整写法 -->
+        <!-- <button v-on:click="showInfo">点我提示信息</button> -->
+
+        <!-- 简写 -->
+        <button @click="showInfo1">点我提示信息1（不传参）</button>
+        <button @click="showInfo2($event,66)">点我提示信息2（传参）</button>
+        <!-- 扫到$event时会自动将其作为事件对象，因此showInfo2(66,$event)也行，但是要对应更改vue中的回调函数的参数顺序 -->
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'scu'
+                }
+            },
+            methods: {
+                showInfo1(event) {
+                    // console.log(event.target.innerText)
+                    // console.log(this) //此处的this是vm
+                    alert('同学你好！')
+                },
+                showInfo2(event, number) {
+                    console.log(event, number)
+                    // console.log(event.target.innerText)
+                    // console.log(this) //此处的this是vm
+                    alert('同学你好！！')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
