@@ -20,7 +20,7 @@
                     (2).函数式
                     如何选择：目前哪种写法都可以，以后学习到组件时，data必须使用函数式，否则会报错。
                 3.一个重要的原则：
-                    由Vue管理的函数，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。
+                    由Vue管理的函数(比如目前的data)，一定不要写箭头函数，一旦写了箭头函数，this就不再是Vue实例了。
     -->
 
     <div id="root">
@@ -70,7 +70,7 @@
         new Vue({
             el: '#root',
             data/*:function*/() {
-                console.log('@@@', this) //此处的this是new出来的Vue实例对象
+                console.log('@@@', this) //此处的this是new出来的Vue实例对象，因为有name这个属性
                 return {
                     name: 'nunaso'
                 }
