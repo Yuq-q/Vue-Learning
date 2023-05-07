@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 
+        深度监视：
+            (1).Vue中的watch默认不监测data中的对象的内部值的改变（一层）。
+            (2).配置deep:true可以监测对象内部值改变（多层）。
+        备注：
+            (1).Vue自身可以监测对象内部值的改变，但Vue提供的watch默认不可以！
+                {{numbers.c.d.e}}更改后能重新触发页面更新
+            (2).使用watch时根据数据的具体结构，决定是否采用深度监视。
+    -->
+    <div id="root">
+        <h2>今天的天气很{{info}}</h2>
+        <button @click="changeWeather">切换天气</button>
+        <hr>
+        <h3>a的值是:{{numbers.a}}</h3>
+        <button @click="numbers.a++">点我让a+1</button>
+        <h3>b的值是:{{numbers.b}}</h3>
+        <button @click="numbers.b++">点我让b+1</button>
+        <button @click="numbers = {a:666,b:888}">彻底替换掉numbers</button>
+        {{numbers.c.d.e}}
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    isHot: true,
+                    numbers: {
+                        a: 1,
+                        b: 1,
+                        c: {
+                            d: {
+                                e: 100
+                            }
+                        }
+                    }
+                }
+            },
+            computed: {
+                info() {
+                    return this.isHot ? '炎热' : '凉爽'
+                }
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot
+                }
+            },
+            watch: {
+                isHot: {
+                    //immediate: true,//初始化(第一次运行)时让handler调用一下，不必等到变化时再调用
+                    //handler什么时候调用？当isHot发生改变时。可以监视data中的属性和计算属性
+                    handler(newValue, oldValue) {
+                        alert("isHot的新值是：" + newValue + ", isHot的旧值是：" + oldValue)
+                    }
+                },
+                // 不能这样直接写a，因为a是在numbers中的属性
+                /* a: {
+                    handler() {
+                        alert("a变化了")
+                    }
+                } */
+
+                // 也不能写number.a，因为不符合js对象的键值的书写方式，只能加引号
+                // 监视多级结构中某个属性的变化
+                /* 'numbers.a': {
+                    handler() {
+                        alert("a变化了")
+                    }
+                }, */
+
+                //监视多级结构中所有属性的变化
+                numbers: {
+                    //如果不加deep: true这句话，则要使用上面的彻底替换掉numbers按钮才能使numbers发生变化，如果只是更改numbers里的内容，是不会触发对numbers的监视的
+                    deep: true,
+                    handler() {
+                        alert("numbers变化了")
+                    }
+                }
+            },
+        })
+
+    </script>
+</body>
+
+</html>

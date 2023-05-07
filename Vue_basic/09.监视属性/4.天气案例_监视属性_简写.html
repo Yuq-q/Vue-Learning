@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>今天的天气很{{info}}</h2>
+        <button @click="changeWeather">切换天气</button>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    isHot: true,
+                }
+            },
+            computed: {
+                info() {
+                    return this.isHot ? '炎热' : '凉爽'
+                }
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot
+                }
+            },
+            watch: {
+                //正常写法
+                /* isHot: {
+                    immediate: true,//初始化(第一次运行)时让handler调用一下，不必等到变化时再调用,这种情况下，后面输出的oldValue值是undefined
+                    deep:true,
+                    //handler什么时候调用？当isHot发生改变时。可以监视data中的属性和计算属性
+                    handler(newValue, oldValue) {
+                        alert("isHot的新值是：" + newValue + ", isHot的旧值是：" + oldValue)
+                    }
+                } */
+                //简写
+                /* isHot(newValue, oldValue) {
+                    // alert("isHot被修改w为了：" + newValue)
+                    alert("isHot的新值是：" + newValue + ", isHot的旧值是：" + oldValue)
+                } */
+            },
+        })
+
+        //正常写法        
+        /* vm.$watch('isHot', {
+            immediate: true,//初始化(第一次运行)时让handler调用一下，不必等到变化时再调用,这种情况下，后面输出的oldValue值是undefined
+            //handler什么时候调用？当isHot发生改变时。可以监视data中的属性和计算属性
+            handler(newValue, oldValue) {
+                alert("isHot的新值是：" + newValue + ", isHot的旧值是：" + oldValue)
+            }
+        }) */
+
+        //简写
+        /* vm.$watch('isHot', function (newValue, oldValue) {
+            // alert("isHot被修改w为了：" + newValue)
+            alert("isHot的新值是：" + newValue + ", isHot的旧值是：" + oldValue)
+        }) */
+    </script>
+</body>
+
+</html>
