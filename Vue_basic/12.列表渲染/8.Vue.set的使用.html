@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>学校信息</h1>
+        <h2>学校名称：{{school.name}}</h2>
+        <h2>学校地址：{{school.address}}</h2>
+        <h2>校长是：{{school.leader}}</h2>
+        <hr />
+        <h1>学生信息</h1>
+        <button @click="addSex">添加一个性别属性，默认值是男</button>
+        <h2>姓名：{{student.name}}</h2>
+        <h2 v-if="student.sex">性别：{{student.sex}}</h2>
+        <h2>年龄：真实{{student.age.rAge}}，对外{{student.age.sAge}}</h2>
+        <h2>朋友们</h2>
+        <ul>
+            <li v-for="(f,index) in student.friends" :key="index">
+                {{f.name}}--{{f.age}}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    school: {
+                        name: 'scu',
+                        address: 'sc',
+                    },
+                    student: {
+                        name: 'tom',
+                        age: {//在new Vue实例的时候，无论嵌套多深，都会为其每个属性设置getter和setter，但是如果亲自在控制台添加vm._data.student.sex='男'，是不会有对应的sex的getter和setter，从而无法实现响应式
+                            rAge: 40,
+                            sAge: 29,
+                        },
+                        friends: [
+                            { name: 'jerry', age: 35 }
+                        ]
+                    }
+                }
+            },
+            methods: {
+                addSex() {
+                    //通过set方法为临时增加的属性添加getter和setter，就能实现响应式了，但是前提是只能为Vue实例的data的某个属性对象的增加子属性时才允许，不能直接在data中增加属性，例如原来的学校leader，直接加在data中会报错，只能将leader、name、address再封装为一个school对象
+                    // Vue.set(this.student,'sex','男')
+                    this.$set(this.student, 'sex', '男')
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

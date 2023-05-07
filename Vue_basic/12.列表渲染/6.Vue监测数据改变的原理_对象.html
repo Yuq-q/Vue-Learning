@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>学校名称：{{name}}</h2>
+        <h2>学校地址：{{address}}</h2>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            data() {
+                return {
+                    name: 'scu',
+                    address: '四川',
+                    student: {
+                        name: 'tom',
+                        age: {//在new Vue实例的时候，无论嵌套多深，都会为其每个属性设置getter和setter
+                            rAge: 40,
+                            sAge: 29,
+                        },
+                        friends: [
+                            { name: 'jerry', age: 35 }
+                        ]
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
