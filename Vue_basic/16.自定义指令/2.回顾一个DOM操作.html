@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn">点我创建一个输入框</button>
+
+    <script>
+        const btn = document.getElementById('btn')
+        btn.onclick = () => {
+            const input = document.createElement('input')
+
+            input.className = 'demo'
+            input.value = 99
+            input.onclick = () => { alert(1) }
+            //错误写法
+            //input.focus()不能写在这里，只能写在document.body.appendChild(input)下面，因为只有输入框被加载入页面后才能获取焦点focus
+
+            // input.parentElement.style.backgroundColor = 'skyblue' 同理，这里也不能在input没有插入页面结构之前就指定其父元素的背景色，只能写在document.body.appendChild(input)下面
+            document.body.appendChild(input)
+
+            input.focus()
+            input.parentElement.style.backgroundColor = 'skyblue'
+            console.log(input.parentElement)
+
+        }
+    </script>
+</body>
+
+</html>
