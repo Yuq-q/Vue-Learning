@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root" :x="n">
+        <h2 v-text="n"></h2>
+        <h2>当前的n值是：{{n}}</h2>
+        <button @click="add">点我n+1</button>
+        <button @click="bye">点我销毁vm</button>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        const vm = new Vue({
+            el: '#root',
+            //如果写template，则会把整个<div id="root" :x="n">...</div>替换掉，而不写template，直接写上面，不会替换
+            /* template: `
+            <div>//只能有一个根元素
+                <h2 v-text="n"></h2>
+                <h2>当前的n值是：{{n}}</h2>
+                <button @click="add">点我n+1</button>
+                <button @click="bye">点我销毁vm</button>
+            </div>`, */
+            data() {
+                return {
+                    n: 1
+                }
+            },
+            methods: {
+                add() {
+                    console.log('add')
+                    this.n++
+                },
+                bye() {
+                    console.log('bye')
+                    this.$destroy()//完全销毁一个实例。清理它与其它实例的连接，解绑它的全部指令及自定义事件监听器，不是元素的DOM事件，比如上面的@click,最终是Vue帮我们创建的原生的DOM事件，即使vm销毁了，其之前创建的原生的DOM事件也不会销毁，他销毁的是自定义的事件监听器。
+                }
+            },
+            watch: {
+                n() {
+                    console.log('n变了')
+                }
+            },
+            beforeCreate() {//在数据监测(为data中的数据匹配getter，setter、封装数组的常用方法)和数据代理创建完成之前
+                console.log('beforeCreate')
+                //console.log(this); //生命周期中的this均是vm，此处vm还没有收到初始化时配置项中传入的data
+            },
+
+            //从beforeCreate到created这个过程中在执行数据监测和数据代理创建
+
+            created() {//数据监测和数据代理创建完成
+                console.log('created')
+                //console.log(this); //此处vm收到了初始化时配置项中传入的data
+            },
+
+            //从created到beforemount这个过程中Vue开始解析模板了，并生成了虚拟DOM(!!在内存汇中)，此时页面还不能显示解析好的内容(因为还没开始挂载)
+
+            beforeMount() {
+                console.log('beforeMount')
+                //console.log(this);//此时页面呈现的还是未经Vue解析的DOM结构(因为还没开始挂载)，在此时所有对DOM的操作，最后都不奏效，因为会在极短的时间内进入到挂载流程，实现页面的替换
+            },
+
+            //从beforeMount到mounted这个过程中，Vue将虚拟DOM转化为了真实DOM，并创建vm.$el且往里存了一份真实DOM
+
+            mounted() {
+                console.log('mounted')
+                //console.log(this);//1.页面中呈现的是经过Vue编译的DOM.2.对DOM的操作均有效(尽可能辟免，可以事先就让Vue完成，不必再手动操作)。至此初始化过程结束，一般在此进行:开启定时器、发送网络请求、订阅消息、绑定自定义事件、等初始化操作。
+
+            },
+
+            //data数据发生变化时，生命周期从mounted转化到beforeUpdate
+
+            beforeUpdate() {
+                console.log('beforeUpdate')
+                //此时:数据是新的，但页面是旧”的，即:页面尚未和数据保持同步。
+            },
+
+            //beforeUpdate到updated过程中，根据新数据，生成新的虚拟DOM，随后与旧的虚拟DOM进行比较，最终完成页面更新，即:完成了Model -> View的更新
+
+            updated() {
+                console.log('updated')
+                //此时: 数据是新的，页面也是新的，即: 页面和数据保持同步。
+            },
+
+            //当调用this.$destroy()时开始从mounted进入到beforeDestroy
+
+            beforeDestroy() {
+                console.log('beforeDestroy')
+                //此时: vm中所有的: data、methods、指令等等，都处于可用状态，马上要执行销毁过程
+
+                //如果在此时调用methods方法更改或者直接更改data中数据，按理说会引起模板的重新解析，但是实际上却不会，会继续执行destroyed，不会触发更新操作了
+                //this.add()
+            },
+
+            //beforeDestroy到destroyed的过程中的阶段一般: 关闭定时器、取消订阅消息、解绑自定义事件等收尾操作
+
+            destroyed() {
+                console.log('destroyed')
+            },
+
+        })
+    </script>
+</body>
+
+</html>
