@@ -21,9 +21,9 @@
         Vue.config.productionTip = false
         const vm = new Vue({
             el: '#root',
-            //如果写template，则会把整个<div id="root" :x="n">...</div>替换掉，而不写template，直接写上面，不会替换
+            //如果写template，则会把整个<div id="root" :x="n">...</div>替换掉，而不写template，直接写在上面，不会替换，还能看到<div id="root" :x="n">...</div>
             /* template: `
-            <div>//只能有一个根元素
+            <div>//只能有一个根元素,所以要用div将其包围，且不能使用<template></template>包围
                 <h2 v-text="n"></h2>
                 <h2>当前的n值是：{{n}}</h2>
                 <button @click="add">点我n+1</button>
