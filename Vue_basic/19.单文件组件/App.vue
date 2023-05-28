@@ -10,7 +10,7 @@ import school from "school";
 import student from "student";
 export default {
   name: "App",
-  comments: { school, student },
+  components: { school, student },
 };
 </script>
 
